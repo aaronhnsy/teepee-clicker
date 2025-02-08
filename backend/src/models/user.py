@@ -57,6 +57,11 @@ class User(BaseModel):
         return User.model_validate(data)
 
     @classmethod
+    async def get_all(cls, state: State, /) -> list[User]:
+        data: list[sqlite3.Row] = await query_fetchall(state, query="SELECT * FROM users")
+        return [User.model_validate({**user}) for user in data]
+
+    @classmethod
     async def create(cls, state: State, /, *, name: str) -> User:
         data: sqlite3.Row
         try:

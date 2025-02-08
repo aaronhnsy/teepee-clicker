@@ -18,7 +18,7 @@ class Upgrade(BaseModel):
 
     @classmethod
     async def get_upgrade(cls, state: State, /, *, name: str) -> Upgrade:
-        data: sqlite3.Row = await query_fetchone(state, query="SELECT * FROM upgrades WHERE name = ?", params=[name])
+        data: sqlite3.Row = await query_fetchone(state, query="SELECT * FROM upgrades WHERE name = ?", params=(name,))
         return Upgrade.model_validate(data)
 
     @classmethod

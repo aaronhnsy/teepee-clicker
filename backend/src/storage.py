@@ -1,8 +1,10 @@
 from collections.abc import AsyncGenerator
 import contextlib
 from litestar import Litestar
-
+from litestar.channels import ChannelsPlugin
 import asqlite
+from litestar.exceptions import WebSocketDisconnect
+from src.types import WebSocket
 
 from src.util import dict_factory
 
@@ -20,3 +22,13 @@ async def sqlite_lifespan(app: Litestar) -> AsyncGenerator[None]:
         yield
     finally:
         await app.state.database.close()
+
+
+@contextlib.asynccontextmanager
+async def chat_room_lifespan(socket: WebSocket, channels: ChannelsPlugin) -> AsyncGenerator[None]:
+    async with channels.start_subscription("chat", history=10) as subscriber:
+        try:
+            async with subscriber.run_in_background(socket.send_data):
+                yield
+        except WebSocketDisconnect:
+            return

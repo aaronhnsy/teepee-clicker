@@ -28,4 +28,4 @@ class _AuthMiddleware(AbstractAuthenticationMiddleware):
         return AuthenticationResult(user=user, auth=None)
 
 
-AuthMiddleware = DefineMiddleware(_AuthMiddleware)
+AuthMiddleware = DefineMiddleware(_AuthMiddleware, exclude="/ws")
