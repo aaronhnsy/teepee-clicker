@@ -1,7 +1,18 @@
-from litestar.status_codes import HTTP_401_UNAUTHORIZED, HTTP_418_IM_A_TEAPOT
+from litestar.status_codes import (
+    HTTP_401_UNAUTHORIZED,
+    HTTP_404_NOT_FOUND,
+    HTTP_406_NOT_ACCEPTABLE,
+    HTTP_409_CONFLICT,
+)
 
 
-__all__ = ["ReasonException", "InvalidUserSecretException", "ApplyUpgradeException"]
+__all__ = [
+    "ReasonException",
+    "InvalidUserSecretException",
+    "NotEnoughPetsException",
+    "UserNotFoundException",
+    "UserAlreadyExistsError",
+]
 
 
 class ReasonException(Exception):
@@ -12,4 +23,8 @@ class ReasonException(Exception):
 
 
 InvalidUserSecretException = ReasonException(HTTP_401_UNAUTHORIZED, reason="Invalid or missing user secret!")
-ApplyUpgradeException = ReasonException(HTTP_418_IM_A_TEAPOT, reason="Unable to apply upgrade idk")
+NotEnoughPetsException = ReasonException(
+    HTTP_406_NOT_ACCEPTABLE, reason="You don't have enough pets to purchase this upgrade!"
+)
+UserNotFoundException = ReasonException(HTTP_404_NOT_FOUND, reason="User could not be found!")
+UserAlreadyExistsError = ReasonException(HTTP_409_CONFLICT, reason="User with that name already exists!")
