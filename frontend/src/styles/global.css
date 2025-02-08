@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+    --drop-shadow-layout-box: 0.1rem 0.1rem 0.1rem black;
+
+    --drop-shadow-star-normal: 0.4rem 0.4rem 0.4rem black;
+    --drop-shadow-star-hover: 0.6rem 0.6rem 0.6rem black;
+    --drop-shadow-star-active: 0.8rem 0.8rem 0.8rem black;
+
+    --animate-spin: spin 10s linear infinite;
+}
