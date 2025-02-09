@@ -1,11 +1,22 @@
 from litestar import Router
 
-from src.controllers.user import UserController
-from src.controllers.websocket import handler
-
 from .global_count import GlobalPetCounter
+from .user import UserController
+from .websocket import websocket_handler
 
 
 __all__ = ["router"]
 
-router = Router(path="/api/", route_handlers=[GlobalPetCounter, UserController, handler])
+
+api_router = Router(
+    path="/api",
+    route_handlers=[GlobalPetCounter, UserController]
+)
+websocket_router = Router(
+    path="/websocket",
+    route_handlers=[websocket_handler]
+)
+router = Router(
+    path="/",
+    route_handlers=[api_router, websocket_router]
+)

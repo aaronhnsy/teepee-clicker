@@ -1,4 +1,2 @@
-*-shm
-*-wal
-__pycache__
-
+# python
+*.pyc

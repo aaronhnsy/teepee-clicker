@@ -14,11 +14,9 @@ package-mode    = false
 requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
-litestar          = { version = "~2.13.0", extras = ["standard", "pydantic"] } 
-pydantic = "^2.10.6"
-asqlite = "^2.0.0"
-
-[tool.poetry.group.dev.dependencies]
+asyncpg       = { version = "~0.30.0" }
+asyncpg-stubs = { version = "~0.30.0" }
+litestar      = { version = "~2.14.0", extras = ["standard", "pydantic"] }
 
 
 [tool.pyright]
