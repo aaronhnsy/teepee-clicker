@@ -11,9 +11,9 @@ export function PetsPanel() {
         <div className={clsx(
             "flex", "flex-col", "items-center", "justify-evenly",
             "p-2", "w-full", "h-1/3", "md:w-1/3", "md:h-full",
-            "bg-lime-600", "drop-shadow-layout-box",
+            "bg-orange-500", "drop-shadow-box",
         )}>
-            <h1 className={clsx("font-bold", "text-3xl", "text-black", "[text-shadow:0.25rem_0.25rem_0.25rem_gray]")}>
+            <h1 className={clsx("font-bold", "text-3xl", "text-black", "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]")}>
                 {`${pets} pet${pets === 1 ? "" : "s"}`}
             </h1>
             <PetsStar/>

@@ -15,7 +15,12 @@ from src.types import State
 if TYPE_CHECKING:
     from src.models import User
 
-__all__ = ["UPGRADE_COSTS"]
+__all__ = [
+    "UpgradeType",
+    "UPGRADE_COSTS",
+    "UPGRADE_COST_MULTIPLIERS",
+    "Upgrade",
+]
 
 class UpgradeType(enum.IntEnum):
     AUTO_PETTER = enum.auto()

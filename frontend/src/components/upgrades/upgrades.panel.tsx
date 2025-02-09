@@ -6,7 +6,7 @@ export function UpgradesPanel() {
         <div className={clsx(
             "grid", "grid-cols-3", "grid-rows-3",
             "gap-2", "p-2", "w-full", "h-2/3", "md:w-2/3", "md:h-full",
-            "bg-lime-600", "drop-shadow-layout-box",
+            "bg-orange-500", "drop-shadow-box",
         )}>
             <UpgradesItem name="auto petter" image="/auto_petter.gif" cost={10}/>
             <UpgradesItem name="tipi" image="/tipi.png" cost={20}/>

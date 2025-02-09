@@ -1,26 +1,18 @@
-"use client";
-
-import { Context } from "@/app/context";
-import { PetsPanel } from "@/components/pets";
-import { UpgradesPanel } from "@/components/upgrades";
+import { getCurrentUser } from "@/actions/common";
+import { LoginForm } from "@/components/auth";
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-    const [pets, setPets] = useState(0);
-    const contextMemo = useMemo(() => ({
-        pets, setPets,
-    }), [pets]);
+export default async function Page() {
+    const user = await getCurrentUser();
+    if (user) redirect("/game");
     return (
         <div className={clsx(
-            "flex", "flex-col-reverse", "md:flex-row",
-            "gap-2", "p-2", "w-full", "h-dvh", "overflow-clip",
-            "bg-lime-500",
+            "flex", "items-center", "justify-center", "text-center",
+            "w-full", "h-full", "overflow-hidden",
+            "bg-orange-500", "drop-shadow-box",
         )}>
-            <Context value={contextMemo}>
-                <PetsPanel/>
-                <UpgradesPanel/>
-            </Context>
+            <LoginForm/>
         </div>
     );
 }

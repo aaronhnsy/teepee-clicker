@@ -1,10 +1,12 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 
 import asyncpg
 from litestar import Request as _Request, WebSocket as _Websocket
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State as _State
 from litestar.handlers.http_handlers import HTTPRouteHandler
+
+from src.snowflakes import SnowflakeGenerator
 
 
 if TYPE_CHECKING:
@@ -17,6 +19,7 @@ __all__ = [
     "Request",
     "Websocket",
     "State",
+    "SessionData",
 ]
 
 
@@ -28,3 +31,9 @@ type Websocket = _Websocket[User, None, State]
 
 class State(_State):
     database: Database
+    snowflake: SnowflakeGenerator
+
+
+class SessionData(TypedDict):
+    user_id: int
+    secret: str

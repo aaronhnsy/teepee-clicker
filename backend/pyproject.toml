@@ -14,9 +14,12 @@ package-mode    = false
 requires-poetry = ">=2.0"
 
 [tool.poetry.dependencies]
+argon2-cffi   = { version = "~23.1.0" }
 asyncpg       = { version = "~0.30.0" }
 asyncpg-stubs = { version = "~0.30.0" }
+itsdangerous  = { version = "~2.2.0"  }
 litestar      = { version = "~2.14.0", extras = ["standard", "pydantic"] }
+passlib       = { version = "~1.7.0"  }
 
 
 [tool.pyright]

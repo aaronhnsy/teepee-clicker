@@ -1,12 +1,28 @@
-from litestar.status_codes import HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND, HTTP_406_NOT_ACCEPTABLE, HTTP_409_CONFLICT
+import http
+import traceback
+from collections.abc import Callable
+from typing import Any
+
+import pydantic
+from litestar import MediaType, Response
+from litestar.exceptions import HTTPException
+from litestar.status_codes import HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR
+
+from src.types import Request
 
 
 __all__ = [
     "ReasonException",
-    "InvalidUserSecretException",
-    "NotEnoughPetsException",
-    "UserNotFoundException",
-    "UserAlreadyExistsError",
+    "NotFoundException",
+    "Error",
+    "exception_handlers",
+]
+
+type _ExceptionHandlerResponse = Response[dict[str, Any]]
+type _ExceptionHandler[T: Exception] = Callable[[Request, T], _ExceptionHandlerResponse]
+type _ExceptionHandlerMapping = dict[
+    type[ReasonException | HTTPException | Exception],
+    _ExceptionHandler[ReasonException] | _ExceptionHandler[HTTPException] | _ExceptionHandler[Exception],
 ]
 
 
@@ -18,19 +34,64 @@ class ReasonException(Exception):
         self.reason: str = reason
 
 
-InvalidUserSecretException = ReasonException(
-    HTTP_401_UNAUTHORIZED,
-    reason="Invalid or missing user secret!"
-)
-NotEnoughPetsException = ReasonException(
-    HTTP_406_NOT_ACCEPTABLE,
-    reason="You don't have enough pets to purchase this upgrade!"
-)
-UserNotFoundException = ReasonException(
+NotFoundException = ReasonException(
     HTTP_404_NOT_FOUND,
-    reason="User could not be found!"
+    reason="Something related to your request could not be found.",
 )
-UserAlreadyExistsError = ReasonException(
-    HTTP_409_CONFLICT,
-    reason="User with that name already exists!"
-)
+
+
+def fmt_status_code(status_code: int) -> str:
+    return f"{status_code} ({http.HTTPStatus(status_code).name})"
+
+
+class Error(pydantic.BaseModel):
+    model_config = pydantic.ConfigDict(arbitrary_types_allowed=True, strict=True)
+    status_code: int
+    status_name: str
+    reason: str | None
+
+
+def handle_custom_exception(request: Request, exception: ReasonException) -> _ExceptionHandlerResponse:
+    return Response(
+        media_type=MediaType.JSON,
+        status_code=exception.status_code,
+        content=Error(
+            status_code=exception.status_code,
+            status_name=fmt_status_code(exception.status_code),
+            reason=exception.reason,
+        ).model_dump(),
+    )
+
+
+def handle_http_exception(request: Request, exception: HTTPException) -> _ExceptionHandlerResponse:
+    return Response(
+        media_type=MediaType.JSON,
+        status_code=exception.status_code,
+        content=Error(
+            status_code=exception.status_code,
+            status_name=fmt_status_code(exception.status_code),
+            reason=None,
+        ).model_dump(),
+    )
+
+
+def handle_other_exception(request: Request, exception: Exception) -> _ExceptionHandlerResponse:
+    status_code = HTTP_500_INTERNAL_SERVER_ERROR
+    tb = traceback.format_exception(exception)
+    print("".join(tb))
+    return Response(
+        media_type=MediaType.JSON,
+        status_code=status_code,
+        content=Error(
+            status_code=status_code,
+            status_name=fmt_status_code(status_code),
+            reason=tb[-1],
+        ).model_dump(),
+    )
+
+
+exception_handlers: _ExceptionHandlerMapping = {
+    ReasonException: handle_custom_exception,
+    HTTPException:   handle_http_exception,
+    Exception:       handle_other_exception,
+}

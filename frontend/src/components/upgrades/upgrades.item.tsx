@@ -14,8 +14,8 @@ export function UpgradesItem({ name, image, cost }: UpgradesItemsProps) {
         <div className={clsx(
             "inline-flex", "flex-col", "items-center", "justify-around",
             "p-2", "overflow-hidden",
-            "bg-lime-700", "drop-shadow-layout-box",
-            pets >= cost ? "grayscale-0 hover:bg-lime-800" : "grayscale-100",
+            "bg-orange-600", "drop-shadow-box",
+            pets >= cost ? "grayscale-0 hover:bg-orange-700" : "grayscale-100",
             "transition-all", "duration-150",
         )} onClick={() => {
             if (cost > pets) return;

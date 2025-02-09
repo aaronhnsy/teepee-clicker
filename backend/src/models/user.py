@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import asyncpg
+import pydantic
+from litestar.status_codes import HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 
-from src.exceptions import UserNotFoundException
+from src.exceptions import ReasonException
 from src.models.base import BaseModel
-from src.models.upgrade import UpgradeType, Upgrade
+from src.models.upgrade import Upgrade, UpgradeType
+from src.security import hash_password
 from src.types import State
 
 
@@ -12,22 +15,49 @@ __all__ = ["User"]
 
 
 class User(BaseModel):
+    id: int
     name: str
     pets: int
 
+    @pydantic.field_serializer(*["id", "pets"], check_fields=False, when_used="json-unless-none")
+    def serialize_ints(self, value: int, /) -> str:
+        return str(value)
+
+    # methods
+
     @classmethod
-    async def get(
-        cls,
-        state: State,
-        /, *,
-        name: str
+    async def create(
+        cls, state: State, /,
+        *, username: str, password: str
     ) -> User:
-        data: asyncpg.Record | None = await state.database.fetchrow(
-            "SELECT * FROM users WHERE name = $1",
-            name
+        try:
+            data: asyncpg.Record | None = await state.database.fetchrow(
+                "INSERT INTO users (id, name, password) VALUES ($1, $2, $3) RETURNING *",
+                state.snowflake.generate(), username, hash_password(password)
+            )
+        except asyncpg.UniqueViolationError:
+            raise ReasonException(
+                HTTP_409_CONFLICT,
+                reason="A user with the specified username already exists.",
+            )
+        user = User.model_validate({**data})
+        await state.database.executemany(
+            "INSERT INTO upgrades (user_id, upgrade_type) VALUES ($1, $2)",
+            [(user.id, upgrade_type) for upgrade_type in UpgradeType]
+        )
+        return user
+
+    @classmethod
+    async def get(cls, state: State, _id: int, /) -> User:
+        data = await state.database.fetchrow(
+            "SELECT id, name, pets FROM users WHERE id = $1",
+            _id,
         )
         if data is None:
-            raise UserNotFoundException
+            raise ReasonException(
+                HTTP_404_NOT_FOUND,
+                reason="A user with the specified id does not exist.",
+            )
         return User.model_validate({**data})
 
     @classmethod
@@ -50,24 +80,6 @@ class User(BaseModel):
             "SELECT SUM(pets) FROM users"
         )
         return data["sum"]
-
-    @classmethod
-    async def create(cls, state: State, /, *, name: str) -> User:
-        try:
-            user_data: asyncpg.Record | None = await state.database.fetchrow(
-                "INSERT INTO users (name, pets) VALUES ($1, $2) RETURNING *", name, 0
-            )
-        except asyncpg.UniqueViolationError:
-            raise UserNotFoundException
-
-        user: User = cls.model_validate({**user_data})
-
-        for x in UpgradeType:
-            await state.database.execute(
-                "INSERT INTO upgrades (type, owner, count) VALUES ($1, $2, $3)", x, user.name, 0
-            )
-
-        return user
 
     async def update_pets(self, state: State, /, *, count: float) -> None:
         await state.database.execute(

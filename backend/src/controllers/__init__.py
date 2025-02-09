@@ -1,8 +1,8 @@
 from litestar import Router
 
-from .global_count import GlobalPetCounter
-from .upgrade import UpgradeController
-from .user import UserController
+from .sessions import SessionsController
+from .upgrades import UpgradeController
+from .users import UserController
 from .websocket import websocket_handler
 
 
@@ -11,7 +11,7 @@ __all__ = ["router"]
 
 api_router = Router(
     path="/api",
-    route_handlers=[GlobalPetCounter, UserController, UpgradeController]
+    route_handlers=[UserController, SessionsController, UpgradeController]
 )
 websocket_router = Router(
     path="/websocket",

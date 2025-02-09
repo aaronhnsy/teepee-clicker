@@ -6,7 +6,7 @@ __all__ = ["openapi_config"]
 
 
 openapi_config: OpenAPIConfig = OpenAPIConfig(
-    title="teepee-clicker",
+    title="teepee",
     version="1.0.0",
     path="/schema",
     render_plugins=[

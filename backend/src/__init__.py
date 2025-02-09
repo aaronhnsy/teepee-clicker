@@ -1,17 +1,21 @@
 from litestar import Litestar
 
 from src.controllers import router
+from src.exceptions import exception_handlers
 from src.middleware import AuthenticationMiddleware
 from src.openapi import openapi_config
+from src.snowflakes import SnowflakeGenerator
 from src.storage import postgresql_lifespan
 
 
-__all__ = ["teepee_clicker"]
+__all__ = ["teepee"]
 
 
-teepee_clicker: Litestar = Litestar(
+teepee: Litestar = Litestar(
     lifespan=[postgresql_lifespan],
     route_handlers=[router],
+    exception_handlers=exception_handlers,
     middleware=[AuthenticationMiddleware],
     openapi_config=openapi_config,
 )
+teepee.state.snowflake = SnowflakeGenerator(machine_id=0, process_id=0)
