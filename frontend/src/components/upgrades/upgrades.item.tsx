@@ -1,6 +1,6 @@
 import { Context } from "@/app/context";
 import clsx from "clsx";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 interface UpgradesItemsProps {
     name: string
@@ -9,7 +9,9 @@ interface UpgradesItemsProps {
 }
 
 export function UpgradesItem({ name, image, cost }: UpgradesItemsProps) {
-    const { pets, setPets } = useContext(Context);
+    const { pets, setPets, petsPerSecond, setPetsPerSecond } = useContext(Context);
+    const [count, setCount] = useState(0);
+
     return (
         <div className={clsx(
             "inline-flex", "flex-col", "items-center", "justify-around",
@@ -20,11 +22,13 @@ export function UpgradesItem({ name, image, cost }: UpgradesItemsProps) {
         )} onClick={() => {
             if (cost > pets) return;
             setPets(pets - cost)
+            setCount(count + 1);
+            setPetsPerSecond(petsPerSecond + 0.5);
         }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={image} alt={name} className={clsx("max-w-8/10", "h-auto", "max-h-8/10", "rounded-xl")}/>
             <p className={clsx("font-normal", "text-black", "text-nowrap", "text-clip")}>
-                {name}
+                {`${name} (${count})`}
             </p>
         </div>
     );

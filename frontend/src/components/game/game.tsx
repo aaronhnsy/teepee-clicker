@@ -14,10 +14,13 @@ export function Game({ initialPetCount }: GameProps) {
 
     const [pets, setPets] = useState(initialPetCount);
     const [totalPets, setTotalPets] = useState(0);
+    const [petsPerSecond, setPetsPerSecond] = useState(0);
+
     const contextMemo = useMemo(() => ({
         pets, setPets,
         totalPets, setTotalPets,
-    }), [pets, totalPets]);
+        petsPerSecond, setPetsPerSecond
+    }), [pets, petsPerSecond, totalPets]);
 
     // const [websocket, setWebsocket] = useState(new WebSocket("wss://aarons-macbook-pro.panda-char.ts.net/websocket"));
     // websocket.onmessage = (event) => {
@@ -28,6 +31,10 @@ export function Game({ initialPetCount }: GameProps) {
     // setInterval(() => {
     //     websocket.send(JSON.stringify({ pets }));
     // }, 1000);
+
+    setInterval(() => {
+        setPets(pets + petsPerSecond);
+    }, 1000)
 
     return (
         <div className={clsx(

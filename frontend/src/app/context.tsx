@@ -5,6 +5,8 @@ export interface ContextProps {
     setPets: (value: number) => void;
     totalPets: number;
     setTotalPets: (value: number) => void;
+    petsPerSecond: number;
+    setPetsPerSecond: (value: number) => void;
 }
 
 export const Context = createContext({} as ContextProps);

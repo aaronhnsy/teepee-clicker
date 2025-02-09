@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { PetsStar } from "./pets.star";
 
 export function PetsPanel() {
-    const { pets, totalPets } = useContext(Context);
+    const { pets, petsPerSecond } = useContext(Context);
     return (
         <div className={clsx(
             "flex", "flex-col", "items-center", "justify-evenly",
@@ -14,7 +14,7 @@ export function PetsPanel() {
             "bg-orange-500", "drop-shadow-box",
         )}>
             <h1 className={clsx("font-bold", "text-3xl", "text-black", "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]")}>
-                {`${totalPets} global pet${totalPets === 1 ? "" : "s"}`}
+                {`${petsPerSecond} pet${petsPerSecond === 1 ? "" : "s"}/s`}
             </h1>
             <h1 className={clsx("font-bold", "text-3xl", "text-black", "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]")}>
                 {`${pets} pet${pets === 1 ? "" : "s"}`}
