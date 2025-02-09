@@ -15,6 +15,7 @@ from src.types import State
 if TYPE_CHECKING:
     from src.models import User
 
+__all__ = ["UPGRADE_COSTS"]
 
 class UpgradeType(enum.IntEnum):
     AUTO_PETTER = enum.auto()
@@ -58,39 +59,38 @@ class Upgrade(BaseModel):
         pydantic.Field(strict=False),
     ]
     owner: str
+    count: int
 
     @pydantic.computed_field()
-    def name(self) -> str:
+    def upgrade_name(self) -> str:
         return self.type.name.lower().replace("_", " ")
 
-    @pydantic.computed_field()
-    def name(self) -> str:
-        return self.type.name.lower().replace("_", " ")
-
+    @classmethod
+    async def get(cls, state: State, /, *, type: UpgradeType, owner: User) -> Upgrade:
+        data: asyncpg.Record = await state.database.fetchrow(
+            "SELECT * FROM upgrades WHERE owner = $1 AND type = $2",
+            owner.name, type
+        )
+        return Upgrade.model_validate({**data})
 
 
     @classmethod
-    async def get_all(cls, state: State, /, *, owner: User) -> int:
+    async def get_all(cls, state: State, /, *, owner: User) -> list[Upgrade]:
         data: list[asyncpg.Record] = await state.database.fetch(
-            "SELECT COUNT(*) as count FROM upgrades WHERE owner = $1",
+            "SELECT * FROM upgrades WHERE owner = $1",
             owner.name
         )
-        return data
+        return [Upgrade.model_validate({**upgrade}) for upgrade in data]
 
-    @classmethod
-    async def purchase(cls, state: State, /, *, type: UpgradeType, owner: User) -> None:
-        count = await state.database.fetchrow(
-            "SELECT COUNT(*) as count FROM upgrades WHERE owner = $1",
-            owner.name
-        )
-        cost = UPGRADE_COSTS[type] * (UPGRADE_COST_MULTIPLIERS[type] * count["count"])
+    async def purchase(self, state: State, /, *, owner: User) -> None:
+        cost = UPGRADE_COSTS[self.type] * (UPGRADE_COST_MULTIPLIERS[self.type] * self.count + 1)
         if owner.pets < cost:
             raise ReasonException(
                 HTTP_400_BAD_REQUEST,
                 reason="You do not have enough pets to purchase this upgrade.",
             )
         await state.database.execute(
-            "INSERT INTO upgrades (type, owner) VALUES ($1, $2)",
-            type, owner,
+            "UPDATE upgrades SET count = $1 WHERE owner = $2 AND type = $3",
+            self.count + 1, owner.name, self.type
         )
         await owner.remove_pets(state, count=cost)

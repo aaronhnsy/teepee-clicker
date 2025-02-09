@@ -13,10 +13,8 @@ class _AuthenticationMiddleware(AbstractAuthenticationMiddleware):
     async def authenticate_request(self, connection: Connection) -> AuthenticationResult:
         state: State = connection.app.state  # pyright: ignore[reportAssignmentType]
         username: str | None = connection.cookies.get("username")
-        try:
-            user = await User.get(state, name=username)
-        except UserNotFoundException:
-            raise UserNotFoundException()
+        print(username)
+        user = await User.get(state, name=username)
         return AuthenticationResult(user=user, auth=None)
 
 
