@@ -6,12 +6,14 @@ interface UpgradesItemsProps {
     name: string
     image: string,
     cost: number,
+    petsPerSecondIncrease: number;
+    clickPowerIncrease: number;
+
 }
 
-export function UpgradesItem({ name, image, cost }: UpgradesItemsProps) {
-    const { pets, setPets, petsPerSecond, setPetsPerSecond } = useContext(Context);
+export function UpgradesItem({ name, image, cost, petsPerSecondIncrease, clickPowerIncrease }: UpgradesItemsProps) {
+    const { pets, setPets, petsPerSecond, setPetsPerSecond, clickPower, setClickPower } = useContext(Context);
     const [count, setCount] = useState(0);
-
     return (
         <div className={clsx(
             "inline-flex", "flex-col", "items-center", "justify-around",
@@ -21,14 +23,15 @@ export function UpgradesItem({ name, image, cost }: UpgradesItemsProps) {
             "transition-all", "duration-150",
         )} onClick={() => {
             if (cost > pets) return;
-            setPets(pets - cost)
+            setPets(pets - cost);
             setCount(count + 1);
-            setPetsPerSecond(petsPerSecond + 0.5);
+            setPetsPerSecond(petsPerSecond + petsPerSecondIncrease);
+            setClickPower(clickPower + clickPowerIncrease);
         }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={image} alt={name} className={clsx("max-w-8/10", "h-auto", "max-h-8/10", "rounded-xl")}/>
             <p className={clsx("font-normal", "text-black", "text-nowrap", "text-clip")}>
-                {`${name} (${count})`}
+                {`$${cost} - ${name} (${count})`}
             </p>
         </div>
     );

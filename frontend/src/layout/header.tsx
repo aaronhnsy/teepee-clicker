@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/actions/common";
-import { LogoutButton } from "@/components/auth";
+import { LogoutButton } from "@/layout/auth";
 import clsx from "clsx";
 
 export async function Header() {

@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/actions/common";
-import { LoginForm } from "@/components/auth";
 import { GameContainer } from "@/components/game";
+import { LoginForm } from "@/layout/auth";
 import clsx from "clsx";
 
 export default async function Page() {

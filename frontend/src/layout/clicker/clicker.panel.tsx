@@ -3,9 +3,9 @@
 import { Context } from "@/app/context";
 import clsx from "clsx";
 import { useContext } from "react";
-import { PetsStar } from "./pets.star";
+import { ClickerButton } from "./clicker.button";
 
-export function PetsPanel() {
+export function ClickerPanel() {
     const { pets, petsPerSecond } = useContext(Context);
     return (
         <div className={clsx(
@@ -19,7 +19,7 @@ export function PetsPanel() {
             <h1 className={clsx("font-bold", "text-3xl", "text-black", "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]")}>
                 {`${pets} pet${pets === 1 ? "" : "s"}`}
             </h1>
-            <PetsStar/>
+            <ClickerButton/>
         </div>
     );
 }

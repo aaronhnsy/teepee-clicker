@@ -4,7 +4,7 @@ import { Context } from "@/app/context";
 import clsx from "clsx";
 import { useContext } from "react";
 
-export function PetsStar() {
+export function ClickerButton() {
     const { pets, setPets } = useContext(Context);
     return (
         <div className={clsx(
@@ -13,9 +13,9 @@ export function PetsStar() {
             "active:translate-x-2", "active:translate-y-2",
             "transition-all", "duration-150",
         )}>
-            <img src="/star_base.png" alt="teepee" className={clsx(
+            <img src="/clicker/teepee.png" alt="teepee" className={clsx(
                 "h-full",
-                "[mask-image:url('/star_mask.png')]", "[mask-size:contain]",
+                "[mask-image:url('/clicker/mask.png')]", "[mask-size:contain]",
                 "animate-spin", "hover:cursor-pointer",
             )} onClick={() => setPets(pets + 1)}/>
         </div>

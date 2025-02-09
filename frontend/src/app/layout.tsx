@@ -1,5 +1,5 @@
 import type { ChildrenProps } from "@/app/types";
-import { Header } from "@/components/header";
+import { Header } from "@/layout/header";
 import clsx from "clsx";
 import { Be_Vietnam_Pro } from "next/font/google";  // eslint-disable-line camelcase
 import "@/styles/global.css";
