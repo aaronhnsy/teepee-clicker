@@ -31,20 +31,15 @@ async def websocket_handler(socket: Websocket, state: State) -> None:
 
     async def handle_receive() -> None:
         async for event in socket.iter_json():
-            if "pets" not in event.keys():
-                await socket.send_json({"error": "new pet count is not provided"})
-                return
-            elif "upgrades" not in event.keys():
-                await socket.send_json({"error": "upgrade list is not provided"})
-                return
-            try:
-                user_upgrades: list[Upgrade] = [Upgrade.model_validate({**upgrade}) for upgrade in event["upgrades"]]
-            except ValidationError:
-                await socket.send_json({"error": "invalid upgrade"})
-                return
-
-            await websocket.user.update_pets(state, count=event.get("pet_count"))
-            await websocket.user.set_upgrades(state, upgrades=user_upgrades)
+            if "pets" in event.keys():
+                await websocket.user.update_pets(state, count=event.get("pets"))
+            if "upgrades" in event.keys():
+                try:
+                    user_upgrades: list[Upgrade] = [Upgrade.model_validate({**upgrade}) for upgrade in event["upgrades"]]
+                except ValidationError:
+                    await socket.send_json({"error": "invalid upgrade"})
+                    return
+                await websocket.user.set_upgrades(state, upgrades=user_upgrades)
             print(f"{socket.client}: {event}")
         await asyncio.sleep(5)
 

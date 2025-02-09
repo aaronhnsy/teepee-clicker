@@ -1,11 +1,12 @@
 import { getCurrentUser } from "@/actions/common";
+import { LogoutButton } from "@/components/auth";
 import clsx from "clsx";
 
 export async function Header() {
     const user = await getCurrentUser();
     return (
         <header className={clsx(
-            "shrink-0", "flex", "flex-row", "items-stretch", "justify-end",
+            "shrink-0", "flex", "flex-row", "items-stretch", "justify-between",
             "w-full", "h-10", "overflow-hidden",
             "bg-orange-500", "drop-shadow-box",
         )}>
@@ -16,6 +17,7 @@ export async function Header() {
             )}>
                 {(user === null) ? ("not logged in") : (user.name)}
             </div>
+            {(user === null) ? null : (<LogoutButton/>)}
         </header>
     );
 }
