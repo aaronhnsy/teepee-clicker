@@ -1,6 +1,6 @@
 "use client";
 
-import { type FormState, login } from "@/actions/auth";
+import { type FormState, signup } from "@/actions/auth";
 import { FormSubmitButton, FormTextInput } from "@/components/forms";
 import { clsx } from "clsx";
 import { useActionState } from "react";
@@ -9,8 +9,8 @@ const initialState: FormState = {
     message: "",
 };
 
-export function LoginForm() {
-    const [state, formAction] = useActionState(login, initialState);
+export function SignupForm() {
+    const [state, formAction] = useActionState(signup, initialState);
     return (
         <form action={formAction} className={clsx(
             "p-2", "w-[90%]", "sm:w-[70%]", "md:w-[60%]", "lg:w-[40%]", "xl:w-[25%]", "overflow-hidden",
@@ -22,7 +22,7 @@ export function LoginForm() {
             )}>
                 <FormTextInput type="text" fieldName="username" label="Username"/>
                 <FormTextInput type="password" fieldName="password" label="Password"/>
-                <FormSubmitButton label="login button" text="login" pendingText="loading..."/>
+                <FormSubmitButton label="signup button" text="signup" pendingText="loading..."/>
                 {state?.message
                     ? (
                         <p className={clsx("px-1", "line-clamp-2", "text-md", "font-bold")}>

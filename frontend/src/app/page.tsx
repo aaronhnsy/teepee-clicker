@@ -1,6 +1,5 @@
 import { getCurrentUser } from "@/actions/common";
 import { GameContainer } from "@/components/game";
-import { LoginForm } from "@/layout/auth";
 import clsx from "clsx";
 
 export default async function Page() {
@@ -12,7 +11,9 @@ export default async function Page() {
                 "w-full", "h-full", "overflow-hidden",
                 "bg-orange-500", "drop-shadow-box",
             )}>
-                <LoginForm/>
+                <h1>
+                    please signup or login to play the game.
+                </h1>
             </div>
         );
     }

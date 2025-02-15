@@ -4,8 +4,8 @@ import { UpgradesItem } from "./upgrades.item";
 export function UpgradesPanel() {
     return (
         <div className={clsx(
-            "grid", "grid-cols-3", "grid-rows-3",
-            "gap-2", "p-2", "w-full", "h-2/3", "md:w-2/3", "md:h-full",
+            "grid", "grid-cols-1",
+            "gap-2", "p-2", "w-full", "h-2/3", "md:w-2/3", "md:h-full", "overflow-scroll",
             "bg-orange-500", "drop-shadow-box",
         )}>
             <UpgradesItem name="auto petter" image="/upgrades/01_auto_petter.gif"

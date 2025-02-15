@@ -6,17 +6,17 @@ import { UpgradesPanel } from "@/layout/upgrades";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-export function Game() {
-    const [pets, setPets] = useState(0);
+export function Game({ initial }: { initial: number }) {
+    const [pets, setPets] = useState(initial);
+    const [petsPerClick, setPetsPerClick] = useState(1);
     const [petsPerSecond, setPetsPerSecond] = useState(0);
-    const [clickPower, setClickPower] = useState(1);
 
     useEffect(() => {
         const id = setInterval(() => {
-            setPets(pets + petsPerSecond);
+            setPets((p) => p + petsPerSecond);
         }, 1000);
         return () => clearInterval(id);
-    });
+    }, [petsPerSecond]);
 
     return (
         <div className={clsx(
@@ -25,8 +25,8 @@ export function Game() {
         )}>
             <Context value={{
                 pets, setPets,
+                petsPerClick, setPetsPerClick,
                 petsPerSecond, setPetsPerSecond,
-                clickPower, setClickPower,
             }}>
                 <ClickerPanel/>
                 <UpgradesPanel/>

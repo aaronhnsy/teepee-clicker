@@ -8,7 +8,7 @@ export interface User {
 
 export async function request<T>(path: string): Promise<T | null> {
     const response = await fetch(
-        `https://aarons-macbook-pro.panda-char.ts.net/api${path}`, {
+        `${process.env.BASE}}/api${path}`, {
             method: "GET",
             headers: { Cookie: (await cookies()).toString() },
         },

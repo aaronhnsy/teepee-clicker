@@ -8,16 +8,15 @@ interface UpgradesItemsProps {
     cost: number,
     petsPerSecondIncrease: number;
     clickPowerIncrease: number;
-
 }
 
 export function UpgradesItem({ name, image, cost, petsPerSecondIncrease, clickPowerIncrease }: UpgradesItemsProps) {
-    const { pets, setPets, petsPerSecond, setPetsPerSecond, clickPower, setClickPower } = useContext(Context);
+    const { pets, setPets, petsPerSecond, setPetsPerSecond, petsPerClick, setPetsPerClick } = useContext(Context);
     const [count, setCount] = useState(0);
     return (
         <div className={clsx(
-            "inline-flex", "flex-col", "items-center", "justify-around",
-            "p-2", "overflow-hidden",
+            "flex", "flex-row",
+            "p-2", "min-h-20", "overflow-hidden",
             "bg-orange-600", "drop-shadow-box",
             pets >= cost ? "grayscale-0 hover:bg-orange-700" : "grayscale-100",
             "transition-all", "duration-150",
@@ -26,11 +25,11 @@ export function UpgradesItem({ name, image, cost, petsPerSecondIncrease, clickPo
             setPets(pets - cost);
             setCount(count + 1);
             setPetsPerSecond(petsPerSecond + petsPerSecondIncrease);
-            setClickPower(clickPower + clickPowerIncrease);
+            setPetsPerClick(petsPerClick + clickPowerIncrease);
         }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt={name} className={clsx("max-w-8/10", "h-auto", "max-h-8/10", "rounded-xl")}/>
-            <p className={clsx("font-normal", "text-black", "text-nowrap", "text-clip")}>
+            <img src={image} alt={name} className={clsx("w-auto", "h-full", "rounded-xl")}/>
+            <p className={clsx("grow", "justify-self-center", "place-self-center", "text-center", "font-normal", "text-black", "text-nowrap", "text-clip")}>
                 {`$${cost} - ${name} (${count})`}
             </p>
         </div>

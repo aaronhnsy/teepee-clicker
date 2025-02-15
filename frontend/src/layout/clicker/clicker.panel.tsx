@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { ClickerButton } from "./clicker.button";
 
 export function ClickerPanel() {
-    const { pets, petsPerSecond, clickPower } = useContext(Context);
+    const { pets, petsPerClick, petsPerSecond } = useContext(Context);
     return (
         <div className={clsx(
             "flex", "flex-col", "items-center", "justify-evenly",
@@ -18,13 +18,13 @@ export function ClickerPanel() {
                     "font-bold", "text-3xl", "text-black",
                     "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]",
                 )}>
-                    {`${petsPerSecond} pet${petsPerSecond === 1 ? "" : "s"}/s`}
+                    {`${petsPerClick} pet${petsPerClick === 1 ? "" : "s"} per click`}
                 </h1>
                 <h1 className={clsx(
                     "font-bold", "text-3xl", "text-black",
                     "[text-shadow:0.15rem_0.15rem_0.15rem_darkgray]",
                 )}>
-                    {`${clickPower} pet${clickPower === 1 ? "" : "s"} per click`}
+                    {`${petsPerSecond} pet${petsPerSecond === 1 ? "" : "s"}/s`}
                 </h1>
                 <h1 className={clsx(
                     "font-bold", "text-3xl", "text-black",

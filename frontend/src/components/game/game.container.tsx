@@ -7,6 +7,6 @@ export async function GameContainer() {
         throw new Error("User not found");
     }
     return (
-        <Game/>
+        <Game initial={Number(user.pets)}/>
     );
 }
