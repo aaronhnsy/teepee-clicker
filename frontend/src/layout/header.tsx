@@ -1,5 +1,6 @@
+import { logout } from "@/actions/auth";
 import { getCurrentUser } from "@/actions/common";
-import { LogoutButton } from "@/layout/auth";
+import { Button } from "@/components/clickables";
 import clsx from "clsx";
 
 export async function Header() {
@@ -17,7 +18,7 @@ export async function Header() {
             )}>
                 {(user === null) ? ("not logged in") : (user.name)}
             </div>
-            {(user === null) ? null : (<LogoutButton/>)}
+            {(user === null) ? null : (<Button label="Logout" onClick={logout}/>)}
         </header>
     );
 }

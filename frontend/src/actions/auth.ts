@@ -72,7 +72,7 @@ export async function signup(previousState: FormState, formData: FormData): Prom
     }
     // send the login request
     const response = await fetch(
-        `${process.env.BASE}}/api/users`,
+        `${process.env.BASE}/api/users`,
         {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -87,4 +87,3 @@ export async function signup(previousState: FormState, formData: FormData): Prom
     }
     return await login(previousState, formData);
 }
-
