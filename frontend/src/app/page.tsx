@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/actions/common";
 import { GameContainer } from "@/components/game";
 import clsx from "clsx";
+import Link from "next/link";
 
 export default async function Page() {
     const user = await getCurrentUser();
@@ -11,9 +12,20 @@ export default async function Page() {
                 "w-full", "h-full", "overflow-hidden",
                 "bg-orange-500", "drop-shadow-box",
             )}>
-                <h1>
-                    please signup or login to play the game.
-                </h1>
+                <Link href="/login" className={clsx(
+                    "inline-flex", "items-center", "justify-center",
+                    "px-2",
+                    "bg-orange-600", "drop-shadow-box",
+                )}>
+                    Login
+                </Link>
+                <Link href="/signup" className={clsx(
+                    "inline-flex", "items-center", "justify-center",
+                    "px-2",
+                    "bg-orange-600", "drop-shadow-box",
+                )}>
+                    Sign Up
+                </Link>
             </div>
         );
     }
