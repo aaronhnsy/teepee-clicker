@@ -46,7 +46,4 @@ class _AuthenticationMiddleware(AbstractAuthenticationMiddleware):
         return AuthenticationResult(user=user, auth=None)
 
 
-AuthenticationMiddleware = DefineMiddleware(
-    _AuthenticationMiddleware,
-    exclude=["schema"]
-)
+AuthenticationMiddleware = DefineMiddleware(_AuthenticationMiddleware, exclude="schema")

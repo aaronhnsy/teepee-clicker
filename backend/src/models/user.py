@@ -5,8 +5,7 @@ import pydantic
 from litestar.status_codes import HTTP_404_NOT_FOUND, HTTP_409_CONFLICT
 
 from src.exceptions import ReasonException
-from src.models.base import BaseModel
-from src.models.upgrade import Upgrade, UpgradeType
+from src.models import BaseModel, Upgrade, UpgradeType
 from src.security import hash_password
 from src.types import State
 

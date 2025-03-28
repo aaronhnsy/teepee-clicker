@@ -1,7 +1,7 @@
 import http
 import traceback
 from collections.abc import Callable
-from typing import Any
+from typing import Annotated, Any
 
 import pydantic
 from litestar import MediaType, Response
@@ -17,6 +17,7 @@ __all__ = [
     "Error",
     "exception_handlers",
 ]
+
 
 type _ExceptionHandlerResponse = Response[dict[str, Any]]
 type _ExceptionHandler[T: Exception] = Callable[[Request, T], _ExceptionHandlerResponse]
@@ -46,9 +47,18 @@ def fmt_status_code(status_code: int) -> str:
 
 class Error(pydantic.BaseModel):
     model_config = pydantic.ConfigDict(arbitrary_types_allowed=True, strict=True)
-    status_code: int
-    status_name: str
-    reason: str | None
+    status_code: Annotated[
+        int,
+        pydantic.Field(description="The status code of the response."),
+    ]
+    status_name: Annotated[
+        str,
+        pydantic.Field(description="The status name of the response."),
+    ]
+    reason: Annotated[
+        str | None,
+        pydantic.Field(description="The reason for the response."),
+    ]
 
 
 def handle_custom_exception(request: Request, exception: ReasonException) -> _ExceptionHandlerResponse:

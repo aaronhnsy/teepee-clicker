@@ -14,8 +14,8 @@ __all__ = ["teepee"]
 teepee: Litestar = Litestar(
     lifespan=[postgresql_lifespan],
     route_handlers=[router],
-    exception_handlers=exception_handlers,
     middleware=[AuthenticationMiddleware],
+    exception_handlers=exception_handlers,
     openapi_config=openapi_config,
 )
 teepee.state.snowflake = SnowflakeGenerator(machine_id=0, process_id=0)

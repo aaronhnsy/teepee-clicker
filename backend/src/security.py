@@ -1,6 +1,7 @@
 import itsdangerous
 import passlib.context
 
+from src.config import CONFIG
 from src.types import SessionData
 
 
@@ -15,8 +16,7 @@ __all__ = [
 
 
 AUTHENTICATION_SIGNER = itsdangerous.URLSafeTimedSerializer(
-    "X0KeOqRa2Hsc3u3bf6DdT2pmr3tbGRwhdVq4wBJrETWU7EdDalLJzjuJdlsqQtWE"
-    "wGJOBEhOSwQ3a6Vbdvaa7Oy8ASGs0Oneas7RdyWrz0xuGkBrRZ8NzGDJqRKakbW7",
+    CONFIG.security.itsdangerous_secret,
     salt="authentication"
 )
 PASSWORD_CONTEXT = passlib.context.CryptContext(schemes=["argon2"])

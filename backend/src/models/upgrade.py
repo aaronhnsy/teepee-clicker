@@ -8,12 +8,13 @@ import pydantic
 from litestar.status_codes import HTTP_400_BAD_REQUEST
 
 from src.exceptions import ReasonException
-from src.models.base import BaseModel
+from src.models import BaseModel
 from src.types import State
 
 
 if TYPE_CHECKING:
     from src.models import User
+
 
 __all__ = [
     "UpgradeType",
@@ -21,6 +22,7 @@ __all__ = [
     "UPGRADE_COST_MULTIPLIERS",
     "Upgrade",
 ]
+
 
 class UpgradeType(enum.IntEnum):
     AUTO_PETTER = enum.auto()
@@ -71,13 +73,12 @@ class Upgrade(BaseModel):
         return self.type.name.lower().replace("_", " ")
 
     @classmethod
-    async def get(cls, state: State, /, *, type: UpgradeType, owner: User) -> Upgrade:
+    async def get(cls, state: State, /, *, upgrade: UpgradeType, owner: User) -> Upgrade:
         data: asyncpg.Record = await state.database.fetchrow(
             "SELECT * FROM upgrades WHERE owner = $1 AND type = $2",
-            owner.name, type
+            owner.name, upgrade
         )
         return Upgrade.model_validate({**data})
-
 
     @classmethod
     async def get_all(cls, state: State, /, *, owner: User) -> list[Upgrade]:

@@ -1,13 +1,12 @@
 from litestar import Controller, get, post
 
-from src.models import Upgrade
-from src.models.base import BaseModel
-from src.models.upgrade import UpgradeType
+from src.models import BaseModel, Upgrade, UpgradeType
 from src.types import Request, State
 
 
 class PurchaseUpgradeRequest(BaseModel):
     type: UpgradeType
+
 
 class UpgradeController(Controller):
     path = "/upgrade"
