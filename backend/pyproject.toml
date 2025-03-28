@@ -18,8 +18,12 @@ argon2-cffi   = { version = "~23.1.0" }
 asyncpg       = { version = "~0.30.0" }
 asyncpg-stubs = { version = "~0.30.0" }
 itsdangerous  = { version = "~2.2.0"  }
-litestar      = { version = "~2.14.0", extras = ["standard", "pydantic"] }
 passlib       = { version = "~1.7.0"  }
+litestar      = { version = "~2.15.0", extras = ["standard", "pydantic"] }
+
+[tool.poetry.group.dev.dependencies]
+isort = { version = "~6.0.0"  }
+ruff  = { version = "~0.11.0" }
 
 
 [tool.pyright]
@@ -43,11 +47,11 @@ ignore = [
     "TD002", "TD003", "FIX001",
     "FIX002", "FIX003", "FIX004",
     # docstrings
-    "D100", "D101", "D102", "D103", "D104",
+    "D100", "D101", "D102", "D103", "D104", "DOC201",
     "D105", "D106", "D107", "D203", "D212",
     # misc
-    "ERA001", "ARG001", "F403", "B904", "E731", "TRY301", "RUF012",
-    "T201", "N818", "COM819",  "PLR0913", "ANN401", "S101", "RUF022",
+    "ERA001", "ARG001", "F403", "B904", "E731", "TRY301", "RUF012", "PLR6301", "PLR0917",
+    "T201", "N818", "COM819",  "PLR0913", "ANN401", "S101", "RUF022", "CPY001",
     "PLR2004", "SIM10", "TC001", "TC002", "TC003", "INP001", "A005", "COM812",
 ]
 

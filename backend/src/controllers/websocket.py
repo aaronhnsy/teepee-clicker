@@ -1,6 +1,6 @@
 import asyncio
 import json
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from litestar import websocket
 from litestar.handlers import send_websocket_stream
@@ -17,7 +17,7 @@ __all__ = ["websocket_handler"]
 @websocket("/")
 async def websocket_handler(socket: Websocket, state: State) -> None:
 
-    async def handle_stream() -> AsyncGenerator[str, None]:
+    async def handle_stream() -> AsyncGenerator[str]:
         while True:
             total_pets: int = await User.get_global_pet_count(state)
             top_ten_petters: dict[str, int] = await User.get_top_10_pets(state)

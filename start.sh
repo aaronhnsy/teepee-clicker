@@ -20,5 +20,4 @@ tmux send-keys -t teepee:misc "tailscale serve --bg --set-path / http://127.0.0.
 tmux send-keys -t teepee:misc "tailscale serve --bg --set-path /api http://127.0.0.1:10000/api" C-m
 tmux send-keys -t teepee:misc "tailscale serve --bg --set-path /websocket http://127.0.0.1:10000/websocket" C-m
 
-
 tmux attach-session -t teepee

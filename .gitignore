@@ -1,8 +1,6 @@
 # ide's
 .idea/
+.vscode/
 
 # misc
 .DS_Store
-
-.env.*
-.env

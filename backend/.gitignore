@@ -1,2 +1,5 @@
-# python
 *.pyc
+
+.ruff_cache/
+
+backend.config.toml
