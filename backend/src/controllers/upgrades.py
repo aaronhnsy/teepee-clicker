@@ -1,9 +1,9 @@
 from litestar import Controller, get, post
 
+from src.models import Upgrade
 from src.models.base import BaseModel
 from src.models.upgrade import UpgradeType
-from src.types import State, Request
-from src.models import Upgrade
+from src.types import Request, State
 
 
 class PurchaseUpgradeRequest(BaseModel):

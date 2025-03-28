@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, TypedDict
 
 import asyncpg
-from litestar import Request as _Request, WebSocket as _Websocket
+from litestar import Request as _Request
+from litestar import WebSocket as _Websocket
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State as _State
 from litestar.handlers.http_handlers import HTTPRouteHandler
